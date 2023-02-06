@@ -2,28 +2,80 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>회원관리</title>
+    <link
+      rel="stylesheet"
+      href="https://uicdn.toast.com/grid/latest/tui-grid.css"
+    />
+    <script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>
+    <style type="text/css">
+      .red.tui-grid-cell {
+        background-color: #f8e0e0;
+      }
+      .blue.tui-grid-cell {
+        background-color: #cef6f5;
+      }
+    </style>
+    <title>change cell colors</title>
   </head>
   <body>
-    <button type="submit" data-event="find-clients">조회</button>
-    <div id="app">
-      <div class="client-list"></div>
-      <form action="http://localhost:8080/client" method="post" class="client">
-        <div><label for="id">아이디</label>
-          <input type="text" name="id" required/>
-        </div>
-        <div><label for="passwd">비밀번호</label>
-          <input type="text" name="passwd" required/>
-        </div>
-        <div><label for="phoneNumber">전화번호</label>
-          <input type="text" name="phoneNumber" required/>
-        </div>
-        <button type="submit" data-event="add-client">고객추가</button>
-      </form>
-      <div class="client-added"></div>
-    </div>
-    <script type="module" src="/main.js"></script>
+    <p> hello, you can change cell colors </p>
+    <span>tui-grid github reference code url: </span><a href="https://github.com/nhn/tui.grid/blob/master/packages/toast-ui.grid/examples/example06-attributes.html"> https://github.com/nhn/tui.grid/blob/master/packages/toast-ui.grid/examples/example06-attributes.html </a>
+    <div id="grid"></div>
+    <script>
+      const instance = new tui.Grid({
+        el: document.getElementById("grid"), // Container element
+        columns: [
+          {
+            header: "Y is Red/N is Blue",
+            name: "name",
+          },
+          {
+            header: "Artist",
+            name: "artist",
+          },
+          {
+            header: "Release",
+            name: "release",
+          },
+          {
+            header: "Genre",
+            name: "genre",
+          },
+        ],
+        data: [
+          {
+            name: "Y",
+            artist: "Birdy",
+            release: "2016.03.26",
+            genre: "Pop",
+            _attributes: {
+              className: {
+                column: {
+                  name: ['red']
+                }
+              }
+            }
+          },
+          {
+            name: "N",
+            artist: "Birdy",
+            release: "2016.03.26",
+            genre: "Pop",
+            _attributes: {
+              className: {
+                column: {
+                  name: ['blue']
+                }
+              }
+            }
+          },
+        ],
+      });
+
+      instance.resetData(newData); // Call API of instance's public method
+
+      Grid.applyTheme("striped"); // Call API of static method
+    </script>
   </body>
 </html>
