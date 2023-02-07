@@ -19,47 +19,69 @@
     <title>change cell colors</title>
   </head>
   <body>
-    <p> hello, you can change cell colors </p>
-    <span>tui-grid github reference code url: </span><a href="https://github.com/nhn/tui.grid/blob/master/packages/toast-ui.grid/examples/example06-attributes.html"> https://github.com/nhn/tui.grid/blob/master/packages/toast-ui.grid/examples/example06-attributes.html </a>
+    <span>
+      <p> hello, This page reproduces <a href="https://github.com/nhn/tui.grid/issues/1820">issue #1820</a></p>
+    </span>
+    <div>
+      <button onclick="addTwoRows()">Add 2 rows</button>
+      <button onclick="addARowByCheckingTwoRows()">add a row by checking 2 rows</button>
+      <button onclick="moveDown()">moving down</button>
+    </div>
     <div id="grid"></div>
     <script>
-      const instance = new tui.Grid({
-        el: document.getElementById("grid"), // Container element
-        columns: [
-          {
-            header: "Y is Red/N is Blue",
-            name: "name",
-          },
-          {
-            header: "Artist",
-            name: "artist",
-          },
-          {
-            header: "Release",
-            name: "release",
-          },
-          {
-            header: "Genre",
-            name: "genre",
-          },
-        ],
-        data: [
-          {
-            name: "Y",
-            artist: "Birdy",
-            release: "2016.03.26",
-            genre: "Pop",
-            _attributes: {
-              className: {
-                column: {
-                  name: ['red']
+      const addTwoRows = () => {
+        if(instance.getData().length === 0){
+          instance.appendRows([{
+              name: "Y",
+              artist: "Birdy",
+              release: "2016.03.26",
+              genre: "Pop",
+              _attributes: {
+                className: {
+                  column: {
+                    name: ['red']
+                  }
                 }
               }
-            }
-          },
-          {
+            },
+            {
+              name: "N",
+              artist: "Birdy",
+              release: "2016.03.26",
+              genre: "Pop",
+              _attributes: {
+                className: {
+                  column: {
+                    name: ['blue']
+                  }
+                }
+              }
+            }]);
+        }
+      }
+
+      const moveDown = () => {
+        const checkedRowKeys = instance.getCheckedRowKeys();
+
+        if(checkedRowKeys == null || checkedRowKeys.length === 0) return;
+
+        const reversed = [...checkedRowKeys].reverse();
+
+        reversed.forEach((rowKey, index, array) => {
+          const rowIndex = instance.getIndexOfRow(rowKey);
+          const afterRow = instance.getRow(rowIndex + 1);
+          if (!afterRow || array.includes(afterRow.rowKey)) return;
+
+          instance.moveRow(rowKey, rowIndex + 1);
+        });
+      }
+
+      const addARowByCheckingTwoRows = () => {
+        if(instance.getData().length === 2){
+          instance.checkAll();
+          instance.appendRows([{
             name: "N",
-            artist: "Birdy",
+            artist: "new Rows",
             release: "2016.03.26",
             genre: "Pop",
             _attributes: {
@@ -69,13 +91,29 @@
                 }
               }
             }
+          }]);
+        }
+      }
+
+      const instance = new tui.Grid({
+        el: document.getElementById("grid"),
+        rowHeaders: ['checkbox'],
+        columns: [
+          {
+            header: "Y is Red/N is Blue",
+            name: "name",
+          },
+          {
+            header: "Artist",
+            name: "artist",
           },
         ],
+        data: [],
       });
 
-      instance.resetData(newData); // Call API of instance's public method
+      instance.resetData([]); // Call API of instance's public method
 
-      Grid.applyTheme("striped"); // Call API of static method
+      tui.Grid.applyTheme("striped"); // Call API of static method
     </script>
   </body>
 </html>
