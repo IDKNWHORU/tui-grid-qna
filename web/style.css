@@ -1,0 +1,134 @@
+body {
+  margin: 0;
+  padding: 0;
+}
+
+/* GNB */
+header {
+  display: flex;
+  height: 60px;
+  align-items: center;
+  font-size: 1.5em;
+  font-family: "Bebas Neue", cursive;
+  background: #29323c;
+  background: linear-gradient(
+    198deg,
+    rgba(2, 0, 36, 1) 0%,
+    rgba(99, 116, 136, 1) 0%,
+    rgba(41, 50, 60, 1) 100%
+  );
+  color: white;
+}
+
+.header {
+  position: absolute;
+  cursor: pointer;
+}
+
+.header_left {
+  left: 15px;
+}
+
+.header_right {
+  right: 15px;
+}
+
+#page_content {
+  padding: 20px;
+}
+
+.content_title {
+  text-align: center;
+}
+
+/* 인사 정보 페이지 */
+#cards_container {
+  width: 80%;
+  margin: 10px auto;
+  padding: 10px 10px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.card {
+  margin: 20px 10px;
+  width: 200px;
+  height: 260px;
+  border-radius: 25px;
+  transform-style: preserve-3d;
+  transform-origin: center right;
+  transition: transform 1s;
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+}
+
+.card.is-flipped {
+  transform: translateX(-100%) rotateY(-180deg);
+}
+
+.card_plane {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  border-radius: 25px;
+  text-align: center;
+  font-weight: 700;
+  font-size: 40px;
+  color: #fff;
+  backface-visibility: hidden;
+}
+
+.card_plane--front {
+  background: #0d0d0d;
+}
+
+.card_plane--back {
+  background: #f2f2f2;
+  color: #3098f2;
+  transform: rotateY(180deg);
+  margin: -260px 0;
+}
+
+/* 인사 정보 등록 페이지 */
+#form_container {
+  align-items: center;
+  text-align: center;
+  margin: 30px 0px;
+}
+
+.form_elem {
+  display: block;
+  width: 250px;
+  margin: 0.75em auto;
+}
+
+.form_elem input {
+  width: 100%;
+  padding: 1em;
+  border: solid 1.5px #9e9e9e;
+  border-radius: 1rem;
+  box-sizing: border-box;
+  background: none;
+}
+
+.form_elem select {
+  width: 100%;
+  padding: 1em;
+  border: solid 1.5px #9e9e9e;
+  border-radius: 1rem;
+  box-sizing: border-box;
+  background: none;
+}
+
+.form_elem button {
+  width: 100%;
+  padding: 1em;
+  border: 0;
+  border-radius: 1rem;
+  box-sizing: border-box;
+  background: #dedede;
+}

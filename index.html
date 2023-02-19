@@ -1,81 +1,17 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link
-      rel="stylesheet"
-      href="https://uicdn.toast.com/grid/latest/tui-grid.css"
-    />
-    <script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>
-    <style type="text/css">
-      .red.tui-grid-cell {
-        background-color: #f8e0e0;
-      }
-      .blue.tui-grid-cell {
-        background-color: #cef6f5;
-      }
-    </style>
-    <title>change cell colors</title>
-  </head>
-  <body>
-    <p> hello, you can change cell colors </p>
-    <span>tui-grid github reference code url: </span><a href="https://github.com/nhn/tui.grid/blob/master/packages/toast-ui.grid/examples/example06-attributes.html"> https://github.com/nhn/tui.grid/blob/master/packages/toast-ui.grid/examples/example06-attributes.html </a>
-    <div id="grid"></div>
-    <script>
-      const instance = new tui.Grid({
-        el: document.getElementById("grid"), // Container element
-        columns: [
-          {
-            header: "Y is Red/N is Blue",
-            name: "name",
-          },
-          {
-            header: "Artist",
-            name: "artist",
-          },
-          {
-            header: "Release",
-            name: "release",
-          },
-          {
-            header: "Genre",
-            name: "genre",
-          },
-        ],
-        data: [
-          {
-            name: "Y",
-            artist: "Birdy",
-            release: "2016.03.26",
-            genre: "Pop",
-            _attributes: {
-              className: {
-                column: {
-                  name: ['red']
-                }
-              }
-            }
-          },
-          {
-            name: "N",
-            artist: "Birdy",
-            release: "2016.03.26",
-            genre: "Pop",
-            _attributes: {
-              className: {
-                column: {
-                  name: ['blue']
-                }
-              }
-            }
-          },
-        ],
-      });
+    <meta charset="UTF-8">
+    <title>2022 Dev-Matching: 웹 프론트엔드 개발자(하반기)-1</title>
+    <link rel="stylesheet" href="/web/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+</head>
 
-      instance.resetData(newData); // Call API of instance's public method
+<body>
+    <div class="app"></div>
+    <script type="module" src="/web/src/index.js"></script>
+</body>
 
-      Grid.applyTheme("striped"); // Call API of static method
-    </script>
-  </body>
 </html>
