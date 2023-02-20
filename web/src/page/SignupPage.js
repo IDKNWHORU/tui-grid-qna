@@ -124,7 +124,6 @@ export const signupPageRender = async (parent, template) => {
 
     const isExist = personalInfo.some(({email, nickname}) => {
       if(email === allInputField[1].value || nickname === allInputField[2].value) {
-        console.log({email, nickname})
         return true;
       }
     });
