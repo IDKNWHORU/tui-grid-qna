@@ -47,5 +47,9 @@ Header.setURL(gnb.querySelector("#menu_signup"), "/web/signup", () => {
 });
 
 app.appendChild(gnb);
-signupPageRender(main.querySelector("main"), formTemplate);
+if(window.location.pathname === '/web/') {
+  await homePageRender(main.querySelector("main"), cardsContainerTemplate);
+} else if(window.location.pathname === '/web/signup') {
+  signupPageRender(main.querySelector("main"), formTemplate);
+}
 app.appendChild(main);
