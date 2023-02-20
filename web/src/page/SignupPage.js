@@ -1,3 +1,4 @@
+import { getPersonalInfo } from "..";
 import { getContentTitle } from "../components/ConetentTitle";
 
 export const createInputField = ({ id, placeholder, isRequired }) => {
@@ -110,11 +111,40 @@ export const signupPageRender = async (parent, template) => {
   const allInputField = formContainer.querySelectorAll("input");
   allInputField[0].setAttribute("pattern", "^([가-힣]){2,4}$");
   allInputField[0].setAttribute("title", "2~4글자의 한글만 입력 가능합니다.");
-  allInputField[1].setAttribute("type", "email");
   allInputField[1].setAttribute("pattern", "[a-zA-Z0-9]+@grepp.co");
   allInputField[1].setAttribute(
     "title",
     "이메일 ID는 영문(대소문자 구분 없음)과 숫자만 입력이 가능하며, @grepp.co 형식의 이메일만 입력이 가능합니다."
   );
   allInputField[2].setAttribute("pattern", "^([a-zA-Z]){3,10}$");
+  allInputField[2].setAttribute("title", "대소문자 구분 없이 3~10 글자의 영문만 입력이 가능합니다.");
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const personalInfo = await getPersonalInfo();
+
+    const isExist = personalInfo.some(({email, nickname}) => {
+      if(email === allInputField[1].value || nickname === allInputField[2].value) {
+        console.log({email, nickname})
+        return true;
+      }
+    });
+
+    if(isExist) {
+      alert('이미 등록된 이메일이나 닉네임입니다.');
+      return;
+    }
+
+    personalInfo.push({
+      idx: personalInfo.length,
+      name: allInputField[0].value,
+      email: allInputField[1].value,
+      nickname: allInputField[2].value,
+      role: formContainer.querySelector("#role").value,
+      mbti: formContainer.querySelector("#mbti").value,
+    });
+
+    localStorage.setItem('personalInfo', JSON.stringify(personalInfo));
+    alert('성공적으로 등록되었습니다.')
+    form.reset();
+  });
 };
