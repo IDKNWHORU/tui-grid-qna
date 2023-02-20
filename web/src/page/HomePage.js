@@ -33,17 +33,21 @@ export const cardRecord = (card) => {
 };
 
 export const getCardStatus = () => {
+  const cardList = JSON.parse(localStorage.getItem("personalInfo")).map(
+    (_, idx) => {
+      return {
+        idx,
+        status: "card",
+      };
+    }
+  );
   if (!localStorage.getItem("cardStatus")) {
-    const cardList = JSON.parse(localStorage.getItem("personalInfo")).map(
-      (_, idx) => {
-        return {
-          idx,
-          status: "card",
-        };
-      }
-    );
-
     localStorage.setItem("cardStatus", JSON.stringify(cardList));
+  } else if(localStorage.getItem("cardStatus")){
+    const cardStatus = JSON.parse(localStorage.getItem("cardStatus"));
+    if(cardStatus.length !== cardList.length) {
+      localStorage.setItem("cardStatus", JSON.stringify(cardStatus.concat(cardList[cardList.length - 1])));
+    }
   }
 
   return JSON.parse(localStorage.getItem("cardStatus"));
@@ -75,6 +79,11 @@ export const infiniteScroll = (lastCard, container) => {
           container.innerHTML = cards;
         }
 
+        const allCards = container.querySelectorAll(".card");
+        allCards.forEach((card, idx) => {
+          setFlip(card);
+        });
+
         if (lastCard.getAttribute("idx") * 1 !== storage.length - 1) {
           infiniteScroll(container.lastElementChild, container);
         }
@@ -93,8 +102,8 @@ export const infiniteScroll = (lastCard, container) => {
 export const homePageRender = async (parent, template) => {
   const app = document.querySelector(".app");
   const personalInfo = await getPersonalInfo();
-  const main = app.querySelector("main");
   const contentTitle = getContentTitle("Great PeoPle");
+  const main = app.querySelector("main");
   const cardContainer = template.content
     .cloneNode(true)
     .querySelector("#cards_container");
@@ -109,9 +118,8 @@ export const homePageRender = async (parent, template) => {
     parent.replaceChild(cardContainer, parent.querySelector("#form_container"));
     app.replaceChild(parent, main);
   }
-  app.replaceChild(parent, parent);
 
-  const allCards = parent.querySelectorAll(".card");
+  const allCards = cardContainer.querySelectorAll(".card");
   allCards.forEach((card, idx) => {
     setFlip(card);
   });
