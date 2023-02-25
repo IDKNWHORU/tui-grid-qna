@@ -1,8 +1,26 @@
-export const getContentTitle = (title) => {
-  const contentTitle = `<div class="content_title">
-    <h1> ${title} </h1>
-  </div>`;
+export const ContentTitle = class extends HTMLElement {
+  #template;
+  #title;
+  constructor() {
+    super();
+    this.#template = document.createElement("div");
+    this.#template.setAttribute("class", "content_title");
+  }
 
-  return new DOMParser().parseFromString(contentTitle, "text/html").body
-    .firstElementChild;
+  attributeChangedCallback(_name, _oldValue, newValue) {
+    this.#title = newValue;
+    this.render();
+  }
+
+  static get observedAttributes() {
+    return ["title"];
+  }
+
+  connectedCallback() {
+    this.appendChild(this.#template);
+  }
+
+  render() {
+    this.#template.innerHTML = `<h1>${this.#title}</h1>`;
+  }
 };
