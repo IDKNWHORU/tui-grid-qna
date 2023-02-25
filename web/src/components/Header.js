@@ -1,20 +1,36 @@
-export const getGnb = () => {
-  const gnb = `<header>
-  <div class="header header_left">
-    <span class="menu_name" id="menu_home">HOME</span>
-  </div>
-  <div class="header header_right">
-    <div class="menu_name" id="menu_signup">SIGNUP</div>
-  </div>
-</header>
-`;
-  return new DOMParser().parseFromString(gnb, "text/html").body
-    .firstElementChild;
-};
+export const Gnb = class extends HTMLElement {
+  #header;
+  constructor() {
+    super();
+  }
 
-export const setURL = (tag, url, flush) => {
-  tag.addEventListener("click", () => {
-    window.history.pushState(null, null, url);
-    flush();
-  });
+  changeUrl(e) {
+    const { target } = e;
+    if (target.tagName === "SPAN") {
+      const app = document.querySelector("pr-app");
+      app.setAttribute(
+        "active-route",
+        "/web/".concat(target.innerText.toLowerCase().replace("home", ""))
+      );
+    }
+  }
+
+  connectedCallback() {
+    const header = document.createElement("header");
+    header.addEventListener("click", this.changeUrl);
+    this.#header = header;
+
+    this.appendChild(header);
+    this.render();
+  }
+
+  render() {
+    this.#header.innerHTML = `
+    <div class="header header_left">
+        <span class="menu_name" id="menu_home">HOME</span>
+    </div>
+    <div class="header header_right">
+        <span class="menu_name" id="menu_signup">SIGNUP</span>
+    </div>`;
+  }
 };
