@@ -1,5 +1,6 @@
 import { HomePage } from "../page/HomePage";
 import { SignupPage } from "../page/SignupPage";
+import { Card } from "./Card";
 import { ContentTitle } from "./ConetentTitle";
 
 const registry = {
@@ -27,6 +28,7 @@ export const PageContent = class extends HTMLElement {
     customElements.define("content-title", ContentTitle);
     customElements.define("home-page", HomePage);
     customElements.define("signup-page", SignupPage);
+    customElements.define("card-component", Card);
     this.#contentTitle = document.createElement("content-title");
     this.#homePage = document.createElement("home-page");
     this.#signupPage = document.createElement("signup-page");
