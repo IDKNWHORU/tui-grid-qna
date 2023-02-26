@@ -33,6 +33,7 @@ export const PageContent = class extends HTMLElement {
 
     registry["/web/"].component = this.#homePage;
     registry["/web/signup"].component = this.#signupPage;
+    this.#template.appendChild(this.#contentTitle);
   }
 
   attributeChangedCallback(_name, _oldValue, newValue) {
@@ -46,7 +47,6 @@ export const PageContent = class extends HTMLElement {
   }
 
   connectedCallback() {
-    this.#template.appendChild(this.#contentTitle);
     this.appendChild(this.#template);
   }
 
