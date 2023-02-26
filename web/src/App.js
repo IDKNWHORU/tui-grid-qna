@@ -1,52 +1,25 @@
-import { ContentTitle } from "./components/ConetentTitle";
 import { Gnb } from "./components/Header";
+import { PageContent } from "./components/PageContent";
 
 export const App = class extends HTMLElement {
   #tempate;
-  #routes = {
-    "/web/": {
-      title: "Great People",
-      activeRoute: "home-page",
-    },
-    "/web/signup": {
-      title: "Sign Up, GreatePeoPle!",
-      activeRoute: "signup-page",
-    },
-  };
   #gnb;
-  #contentTitle;
-  #activeRoute;
+  #pageContent;
   constructor() {
     super();
     customElements.define("gnb-component", Gnb);
-    customElements.define("content-title", ContentTitle);
+    customElements.define("page-content", PageContent);
     const tempate = document.createElement("div");
-    tempate.setAttribute("class", ".app");
+    tempate.setAttribute("class", "app");
     this.#tempate = tempate;
     this.#gnb = document.createElement("gnb-component");
-    this.#contentTitle = document.createElement("content-title");
-  }
-
-  attributeChangedCallback(name, oldValue, newValue) {
-    this.#activeRoute = newValue;
-    window.history.pushState(null, null, newValue);
-    this.render();
-  }
-
-  static get observedAttributes() {
-    return ["active-route"];
+    this.#pageContent = document.createElement("page-content");
   }
 
   connectedCallback() {
+    this.#pageContent.setAttribute("active-route", location.pathname);
     this.#tempate.appendChild(this.#gnb);
-    this.#tempate.appendChild(this.#contentTitle);
+    this.#tempate.appendChild(this.#pageContent);
     this.appendChild(this.#tempate);
-  }
-
-  render() {
-    this.#contentTitle.setAttribute(
-      "title",
-      this.#routes[this.#activeRoute].title
-    );
   }
 };

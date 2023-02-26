@@ -7,8 +7,8 @@ export const Gnb = class extends HTMLElement {
   changeUrl(e) {
     const { target } = e;
     if (target.tagName === "SPAN") {
-      const app = document.querySelector("pr-app");
-      app.setAttribute(
+      const pageContent = document.querySelector("page-content");
+      pageContent.setAttribute(
         "active-route",
         "/web/".concat(target.innerText.toLowerCase().replace("home", ""))
       );
