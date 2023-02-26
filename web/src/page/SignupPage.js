@@ -1,5 +1,4 @@
-import { getPersonalInfo } from "..";
-import { getContentTitle } from "../components/ConetentTitle";
+// import { getPersonalInfo } from "..";
 
 export const createInputField = ({ id, placeholder, isRequired }) => {
   return `<span class="form_elem">
@@ -39,7 +38,6 @@ export const createFormTemplate = () => {
 
 export const signupPageRender = async (parent, template) => {
   const app = document.querySelector(".app");
-  const contentTitle = getContentTitle("Sign Up, GreatePeoPle!");
   const main = app.querySelector("main");
   const formContainer = template.content
     .cloneNode(true)
@@ -96,11 +94,9 @@ export const signupPageRender = async (parent, template) => {
     .join("");
 
   if (main === null) {
-    parent.appendChild(contentTitle);
     parent.appendChild(formContainer);
     app.appendChild(parent);
   } else if (app.querySelector("main") !== null) {
-    parent.replaceChild(contentTitle, parent.querySelector(".content_title"));
     parent.replaceChild(
       formContainer,
       parent.querySelector("#cards_container")
@@ -117,19 +113,25 @@ export const signupPageRender = async (parent, template) => {
     "이메일 ID는 영문(대소문자 구분 없음)과 숫자만 입력이 가능하며, @grepp.co 형식의 이메일만 입력이 가능합니다."
   );
   allInputField[2].setAttribute("pattern", "^([a-zA-Z]){3,10}$");
-  allInputField[2].setAttribute("title", "대소문자 구분 없이 3~10 글자의 영문만 입력이 가능합니다.");
+  allInputField[2].setAttribute(
+    "title",
+    "대소문자 구분 없이 3~10 글자의 영문만 입력이 가능합니다."
+  );
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
-    const personalInfo = await getPersonalInfo();
+    // const personalInfo = await getPersonalInfo();
 
-    const isExist = personalInfo.some(({email, nickname}) => {
-      if(email === allInputField[1].value || nickname === allInputField[2].value) {
+    const isExist = personalInfo.some(({ email, nickname }) => {
+      if (
+        email === allInputField[1].value ||
+        nickname === allInputField[2].value
+      ) {
         return true;
       }
     });
 
-    if(isExist) {
-      alert('이미 등록된 이메일이나 닉네임입니다.');
+    if (isExist) {
+      alert("이미 등록된 이메일이나 닉네임입니다.");
       return;
     }
 
@@ -142,8 +144,18 @@ export const signupPageRender = async (parent, template) => {
       mbti: formContainer.querySelector("#mbti").value,
     });
 
-    localStorage.setItem('personalInfo', JSON.stringify(personalInfo));
-    alert('성공적으로 등록되었습니다.')
+    localStorage.setItem("personalInfo", JSON.stringify(personalInfo));
+    alert("성공적으로 등록되었습니다.");
     form.reset();
   });
+};
+
+export const SignupPage = class extends HTMLElement {
+  constructor() {
+    super();
+  }
+
+  connectedCallback() {
+    console.log("signup!");
+  }
 };
