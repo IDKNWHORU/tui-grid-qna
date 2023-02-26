@@ -1,6 +1,3 @@
-import { getPersonalInfo } from "..";
-import { getContentTitle } from "../components/ConetentTitle";
-
 export const getCardContainerTemplate = () => {
   const cardsContainerTemplate = document.createElement("template");
   cardsContainerTemplate.id = "cards_container_template";
@@ -43,10 +40,13 @@ export const getCardStatus = () => {
   );
   if (!localStorage.getItem("cardStatus")) {
     localStorage.setItem("cardStatus", JSON.stringify(cardList));
-  } else if(localStorage.getItem("cardStatus")){
+  } else if (localStorage.getItem("cardStatus")) {
     const cardStatus = JSON.parse(localStorage.getItem("cardStatus"));
-    if(cardStatus.length !== cardList.length) {
-      localStorage.setItem("cardStatus", JSON.stringify(cardStatus.concat(cardList[cardList.length - 1])));
+    if (cardStatus.length !== cardList.length) {
+      localStorage.setItem(
+        "cardStatus",
+        JSON.stringify(cardStatus.concat(cardList[cardList.length - 1]))
+      );
     }
   }
 
@@ -101,8 +101,7 @@ export const infiniteScroll = (lastCard, container) => {
 
 export const homePageRender = async (parent, template) => {
   const app = document.querySelector(".app");
-  const personalInfo = await getPersonalInfo();
-  const contentTitle = getContentTitle("Great PeoPle");
+  // const personalInfo = await getPersonalInfo();
   const main = app.querySelector("main");
   const cardContainer = template.content
     .cloneNode(true)
@@ -111,10 +110,8 @@ export const homePageRender = async (parent, template) => {
   cardContainer.innerHTML = cards;
 
   if (main === null) {
-    parent.appendChild(contentTitle);
     parent.appendChild(cardContainer);
   } else if (main !== null) {
-    parent.replaceChild(contentTitle, parent.querySelector(".content_title"));
     parent.replaceChild(cardContainer, parent.querySelector("#form_container"));
     app.replaceChild(parent, main);
   }
@@ -125,4 +122,14 @@ export const homePageRender = async (parent, template) => {
   });
 
   infiniteScroll(allCards[allCards.length - 1], cardContainer);
+};
+
+export const HomePage = class extends HTMLElement {
+  constructor() {
+    super();
+  }
+
+  connectedCallback() {
+    console.log("hello");
+  }
 };
