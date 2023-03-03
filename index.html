@@ -3,79 +3,247 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link
-      rel="stylesheet"
-      href="https://uicdn.toast.com/grid/latest/tui-grid.css"
-    />
-    <script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>
-    <style type="text/css">
-      .red.tui-grid-cell {
-        background-color: #f8e0e0;
+    <title>change cell colors</title>
+    <style>
+      table {
+        border-collapse: collapse;
       }
-      .blue.tui-grid-cell {
-        background-color: #cef6f5;
+
+      th {
+        border: solid 1px;
+      }
+
+      td {
+        border: solid 1px;
+        text-align: center;
+      }
+
+      .result {
+        margin-top: 15px;
+        display: flex;
+      }
+
+      .title {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .title p {
+        border: solid 1px;
+        margin: 0;
+      }
+
+      .item {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .item input {
+        height: 17px;
+        text-align: end;
       }
     </style>
-    <title>change cell colors</title>
   </head>
+
   <body>
-    <p> hello, you can change cell colors </p>
-    <span>tui-grid github reference code url: </span><a href="https://github.com/nhn/tui.grid/blob/master/packages/toast-ui.grid/examples/example06-attributes.html"> https://github.com/nhn/tui.grid/blob/master/packages/toast-ui.grid/examples/example06-attributes.html </a>
-    <div id="grid"></div>
+    <table>
+      <thead>
+        <tr></tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+    <articl class="result">
+      <section class="title">
+        <p>접속저항</p>
+        <p>절연저항</p>
+        <p>접착력</p>
+        <p>기포</p>
+        <p>들뜸</p>
+        <p>흡습</p>
+        <p>압흔</p>
+        <p>포착수</p>
+        <p>배열</p>
+        <p>파단강도</p>
+        <p>파괴모드</p>
+      </section>
+    </articl>
     <script>
-      const instance = new tui.Grid({
-        el: document.getElementById("grid"), // Container element
-        columns: [
-          {
-            header: "Y is Red/N is Blue",
-            name: "name",
-          },
-          {
-            header: "Artist",
-            name: "artist",
-          },
-          {
-            header: "Release",
-            name: "release",
-          },
-          {
-            header: "Genre",
-            name: "genre",
-          },
-        ],
-        data: [
-          {
-            name: "Y",
-            artist: "Birdy",
-            release: "2016.03.26",
-            genre: "Pop",
-            _attributes: {
-              className: {
-                column: {
-                  name: ['red']
-                }
-              }
-            }
-          },
-          {
-            name: "N",
-            artist: "Birdy",
-            release: "2016.03.26",
-            genre: "Pop",
-            _attributes: {
-              className: {
-                column: {
-                  name: ['blue']
-                }
-              }
-            }
-          },
-        ],
-      });
+      const colSpanCount = (items) => {
+        for (const value of items.values()) {
+          if (value instanceof Array) {
+            return Object.keys(value[0]).length;
+          } else {
+            return items.length;
+          }
+        }
+      };
 
-      instance.resetData(newData); // Call API of instance's public method
+      const render = (doc) => {
+        const table = document.querySelector("table");
+        const result = document.querySelector(".result");
 
-      Grid.applyTheme("striped"); // Call API of static method
+        const theadRow = table.querySelector("thead>tr");
+        const tbody = table.querySelector("tbody");
+
+        const header = doc
+          .map((sample) => {
+            const colSpan = colSpanCount(sample.items);
+            return `<td colspan="${colSpan}">${sample.title}</td>`;
+          })
+          .join("");
+        theadRow.innerHTML = header;
+
+        const testNo = doc
+          .map((sample) => {
+            const colSpan = colSpanCount(sample.items);
+
+            return `<td colspan="${colSpan}">${sample.testNo}</td>`;
+          })
+          .join("");
+        const concept = doc
+          .map((sample) => {
+            const colSpan = colSpanCount(sample.items);
+
+            return `<td colspan="${colSpan}">${sample.concept.replaceAll(
+              "\n",
+              "</br>"
+            )}</td>`;
+          })
+          .join("");
+
+        const layer = [
+          `<td ${
+            colSpanCount(doc[0].items) > 0
+              ? "colspan=" + colSpanCount(doc[0].items)
+              : ""
+          }>${doc[0].layer}</td>`,
+          ...doc.map((sample, idx) => {
+            if (idx > 0) {
+              return sample.items
+                .map((item) => {
+                  return `<td>${item.layer}</td>`;
+                })
+                .join("");
+            }
+          }),
+        ].join("");
+        const refTestNo = doc
+          .map((sample) => {
+            const colSpan = colSpanCount(sample.items);
+
+            return `<td colspan="${colSpan}">${sample.refTestNo}</td>`;
+          })
+          .join("");
+        const film = [
+          `<td ${
+            colSpanCount(doc[0].items) > 0
+              ? "colspan=" + colSpanCount(doc[0].items)
+              : ""
+          }>${doc[0].film}</td>`,
+          ...doc.map((sample, idx) => {
+            if (idx > 0) {
+              return sample.items
+                .map((item) => {
+                  return `<td>${item.film}</td>`;
+                })
+                .join("");
+            }
+          }),
+        ].join("");
+        const ball = doc
+          .map((sample) => {
+            const colSpan = colSpanCount(sample.items);
+
+            return `<td colspan="${colSpan}">${sample.ball}</td>`;
+          })
+          .join("");
+        const tempNtime = [
+          `<td ${
+            colSpanCount(doc[0].items) > 0
+              ? "colspan=" + colSpanCount(doc[0].items)
+              : ""
+          }>${doc[0].temp_n_time}</td>`,
+          ...doc.map((sample, idx) => {
+            if (idx > 0) {
+              return sample.items
+                .map((item) => {
+                  return `<td>${item.temp_n_time}</td>`;
+                })
+                .join("");
+            }
+          }),
+        ].join("");
+        const itemsHeader = doc[0].items.map((sample) => {
+          return sample.map((item, idx) => {
+            if (idx === 0) {
+              return `<tr><td>${item.value}</td><td ${
+                sample.length > 0 ? "rowspan=" + sample.length : ""
+              }>${item.key}</td>`;
+            }
+            return `<tr><td>${item.value}</td>`;
+          });
+        });
+
+        const items = itemsHeader
+          .map((sample) => {
+            let summary = Array(doc[1].items.length).fill(0);
+            return sample
+              .map((item, idx) => {
+                const sample2Values = doc[1].items.map((sample2, idx2) => {
+                  const value = item.split("</td>")[0].substring(8);
+                  summary[idx2] += sample2[value];
+                  return `<td>${sample2[value]}</td>`;
+                });
+
+                if (sample.length - 1 > idx) {
+                  return `${item}${sample2Values.join("")}</tr>`;
+                } else {
+                  const summaryValues = summary.map((value) => {
+                    return `<td>${value}</td>`;
+                  });
+                  const summaryTag = `<tr><td colspan=${colSpanCount(doc[0].items)}>${sample[0].split("rowspan=")[1].split('>')[1].split('</td')[0]} 총량</td>${summaryValues.join('')}</tr>`;
+                  return `${item}${sample2Values.join("")}</tr>${summaryTag}`;
+                }
+              })
+              .join("");
+          })
+          .join("");
+
+        const results = doc
+          .map((sample, idx) => {
+            if (idx > 0) {
+              const { test_result } = sample;
+              return `<form class="item">
+                <input type="number" name="connection_resistance" value=${test_result.connection_resistance} >
+                <input type="number" name="insulation_resistance" value=${test_result.insulation_resistance} >
+                <input type="number" name="adhesion" value=${test_result.adhesion} >
+                <input type="number" name="bubble" value=${test_result.bubble} >
+                <input type="number" name="exhilaration" value=${test_result.exhilaration} >
+                <input type="number" name="moisture_absorption" value=${test_result.moisture_absorption} >
+                <input type="number" name="indentation" value=${test_result.indentation} >
+                <input type="number" name="catch_count" value=${test_result.catch_count} >
+                <input type="number" name="arrangement" value=${test_result.arrangement} >
+                <input type="number" name="breaking_strength" value=${test_result.breaking_strength} >
+                <input type="number" name="destruction_mode" value=${test_result.destruction_mode} >
+              </form>`;
+            }
+            return ``;
+          })
+          .join("");
+
+        tbody.insertAdjacentHTML("beforeend", `<tr>${testNo}</tr>`);
+        tbody.insertAdjacentHTML("beforeend", `<tr>${concept}</tr>`);
+        tbody.insertAdjacentHTML("beforeend", `<tr>${layer}</tr>`);
+        tbody.insertAdjacentHTML("beforeend", `<tr>${refTestNo}</tr>`);
+        tbody.insertAdjacentHTML("beforeend", `<tr>${film}</tr>`);
+        tbody.insertAdjacentHTML("beforeend", `<tr>${ball}</tr>`);
+        tbody.insertAdjacentHTML("beforeend", `<tr>${tempNtime}</tr>`);
+        tbody.insertAdjacentHTML("beforeend", `<tr>${items}</tr>`);
+        result.insertAdjacentHTML("beforeend", `${results}`);
+      };
+      fetch("http://191.1.70.196:8080/get_material_info/")
+        .then((res) => res.json())
+        .then(render);
     </script>
   </body>
 </html>
