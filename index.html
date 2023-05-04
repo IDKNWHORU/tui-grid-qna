@@ -23,12 +23,19 @@
     <span>tui-grid github reference code url: </span><a href="https://github.com/nhn/tui.grid/blob/master/packages/toast-ui.grid/examples/example06-attributes.html"> https://github.com/nhn/tui.grid/blob/master/packages/toast-ui.grid/examples/example06-attributes.html </a>
     <div id="grid"></div>
     <script>
+      const fnc = () => {
+        console.log(`this is function called`);
+      }
       class CustomButton{
         constructor(props) {
           const button = document.createElement('button');
           button.innerText = 'button';
           button.addEventListener('click', () => {
-            console.log('hello');
+            if(props.columnInfo.renderer.options.onClick != null) {
+              props.columnInfo.renderer.options.onClick();
+            }else {
+              console.log('hello');
+            }
           })
 
           this.el = button;
@@ -66,7 +73,10 @@
             header: 'Custom',
             name: 'custom',
             renderer: {
-              type: CustomButton
+              type: CustomButton,
+              options: {
+                onClick: fnc,
+              }
             }
           }
         ],
