@@ -23,6 +23,26 @@
     <span>tui-grid github reference code url: </span><a href="https://github.com/nhn/tui.grid/blob/master/packages/toast-ui.grid/examples/example06-attributes.html"> https://github.com/nhn/tui.grid/blob/master/packages/toast-ui.grid/examples/example06-attributes.html </a>
     <div id="grid"></div>
     <script>
+      class CustomButton{
+        constructor(props) {
+          const button = document.createElement('button');
+          button.innerText = 'button';
+          button.addEventListener('click', () => {
+            console.log('hello');
+          })
+
+          this.el = button;
+        }
+
+        getElement() {
+          return this.el;
+        }
+
+        getValue() {
+          return this.el.value;
+        }
+      }
+
       const instance = new tui.Grid({
         el: document.getElementById("grid"), // Container element
         columns: [
@@ -42,6 +62,13 @@
             header: "Genre",
             name: "genre",
           },
+          {
+            header: 'Custom',
+            name: 'custom',
+            renderer: {
+              type: CustomButton
+            }
+          }
         ],
         data: [
           {
